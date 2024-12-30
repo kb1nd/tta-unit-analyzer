@@ -13,7 +13,7 @@ function launchPopup(type, data) {
 
 function roundupBuffcd(true_cd, buff_cd) {
   switch (true) {
-    case Math.round(true_cd / buff_cd) < 2:
+    case Math.floor(true_cd / buff_cd) < 2:
       while (i < buff_cd) i += true_cd;
       return i;
       break;
