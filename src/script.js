@@ -10,18 +10,6 @@ function launchPopup(type, data) {
       break;
   }
 }
-
-function roundupBuffcd(true_cd, buff_cd) {
-  switch (true) {
-    case Math.floor(true_cd / buff_cd) < 2:
-      while (i < buff_cd) i += true_cd;
-      return i;
-      break;
-    default:
-      return true_cd * Math.round(true_cd / buff_cd);
-      break;
-  }
-}
 function buffDps(true_cd, buff_cd, buff_dmg) {
   let buff_dps;
   switch (true) {
@@ -29,7 +17,8 @@ function buffDps(true_cd, buff_cd, buff_dmg) {
       buff_dps = buff_dmg / true_cd;
       break;
     case true_cd < buff_cd:
-      buff_dps = buff_dmg / roundupBuffcd(true_cd, buff_cd);
+      while (i < buff_cd) i += true_cd;
+      buff_dps = buff_dmg / i;
       break;
     case true_cd === buff_cd:
       buff_dps = buff_dmg / buff_cd;
