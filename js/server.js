@@ -6,10 +6,10 @@ const dep = {
 const port = process.env.PORT || 3001;
 const server = dep.http.createServer(function (req, res) {
   let header;
-  dep.fs.readFile("src/index.ejs", { encoding: "utf8" }, (data) => {
+  dep.fs.readFile("index.ejs", { encoding: "utf8" }, (data) => {
     header = {
       type: "text/html",
-      body: dep.ejs.render(data, { test: "hello world" }, { async: true }),
+      body: dep.ejs.render(data, {}),
     };
     res.writeHeader(200, { "Content-Type": header.type });
     res.write(header.body);
