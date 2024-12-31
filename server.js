@@ -1,7 +1,7 @@
 const dep = {
-  fs: import("fs"),
-  http: import("http"),
-  ejs: import("ejs"),
+  fs: require("fs"),
+  http: require("http"),
+  ejs: require("ejs"),
 };
 const port = process.env.PORT || 3001;
 const server = dep.http.createServer(function (req, res) {
