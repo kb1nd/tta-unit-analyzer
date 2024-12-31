@@ -10,7 +10,10 @@ function launchPopup(type, data) {
       break;
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 66e9f6e580c1406863b236b40fb0e66389ba16b9
 function buffDps(true_cd, buff_cd, buff_dmg) {
   let buff_dps;
   switch (true) {
