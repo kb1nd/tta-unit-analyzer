@@ -16,5 +16,7 @@ async function handle(req, res) {
     res.end();
   });
 }
-const server = dep.http.createServer((req, res) => handle(req, res));
+const server = dep.http.createServer((req, res) => {
+  handle(req, res);
+});
 server.listen(port);
