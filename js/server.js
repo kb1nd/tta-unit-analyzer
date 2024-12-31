@@ -6,10 +6,14 @@ const dep = {
 const port = process.env.PORT || 3001;
 const server = dep.http.createServer(function (req, res) {
   let header;
-  dep.fs.readFile("index.ejs", { encoding: "utf8" }, (data) => {
+  dep.ejs.renderFile("index.ejs", {}, {}, function (err, str) {
+    switch (err) {
+      case true:
+        console.log("Error when parsing EJS");
+    }
     header = {
       type: "text/html",
-      body: dep.ejs.render(data, {}),
+      body: str,
     };
     res.writeHeader(200, { "Content-Type": header.type });
     res.write(header.body);
