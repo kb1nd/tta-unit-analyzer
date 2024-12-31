@@ -6,7 +6,7 @@ const dep = {
 const port = process.env.PORT || 3001;
 const server = dep.http.createServer(function (req, res) {
   let header;
-  dep.fs.readFileSync("src/index.ejs", { encoding: "utf8" }, (data) => {
+  dep.fs.readFile("src/index.ejs", { encoding: "utf8" }, (data) => {
     header = {
       type: "text/html",
       body: dep.ejs.render(data, { test: "hello world" }, { async: true }),
@@ -16,4 +16,6 @@ const server = dep.http.createServer(function (req, res) {
     res.end();
   });
 });
-server.listen(port, "0.0.0.0");
+server.listen(port, "0.0.0.0", () => {
+  console.log(`Server is running on http://0.0.0.0:${port}`);
+});
