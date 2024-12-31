@@ -16,4 +16,4 @@ const server = dep.http.createServer(function (req, res) {
     res.end();
   });
 });
-server.listen(port);
+server.listen(port, "0.0.0.0");
