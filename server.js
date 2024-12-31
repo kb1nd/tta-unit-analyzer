@@ -4,7 +4,7 @@ const dep = {
   ejs: import("ejs"),
 };
 const port = process.env.PORT || 3001;
-async function handle(req, res) {
+const server = dep.http.createServer(function (req, res) {
   let header;
   dep.fs.readFileSync("src/index.ejs", { encoding: "utf8" }, (data) => {
     header = {
@@ -15,8 +15,5 @@ async function handle(req, res) {
     res.write(header.body);
     res.end();
   });
-}
-const server = dep.http.createServer((req, res) => {
-  handle(req, res);
 });
 server.listen(port);
