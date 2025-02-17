@@ -1,6 +1,6 @@
-const fs = require("fs");
-const http = require("http");
-const WebSocket = require("ws");
+const express = require("express");
+const app = express();
+const expressWs = require("express-ws")(app);
 const port = process.env.PORT || 3001;
 const Cache = [];
 const Eval = (key) => {
@@ -16,33 +16,18 @@ const Create = (key, payload) =>
     key: key,
     data: payload,
   });
-const getRoute = (route) =>
-  fs.readFile(__dirname + route).then((html) => {
-    return html;
-  });
-const server = http.createServer(function (req, res) {
-  res.setHeader("Content-Type", "text/html");
-  res.writeHead(200);
-  switch (req.url) {
-    case "/docker":
-      res.end(getRoute("views/docker.html"));
-      break;
-    case "/playground":
-      res.end(getRoute("views/playground.html"));
-      break;
-    case "/calculator":
-      res.end(getRoute("views/calculator.html"));
-      break;
-    default:
-      res.end(getRoute("views/index.html"));
-      break;
-  }
-});
-const wss = new WebSocket.Server(server);
-server.listen(port, "0.0.0.0", () => {
-  console.log(`Server is running on http://0.0.0.0:${port}`);
-});
-wss.on("connection", (ws) => {
+app.use(express.static("public"));
+app.get("/", (req, res) => res.sendFile(__dirname + "/views/index.html"));
+app.get("/playground", (req, res) =>
+  res.sendFile(__dirname + "/views/playground.html"),
+);
+app.get("/docker", (req, res) =>
+  res.sendFile(__dirname + "/views/docker.html"),
+);
+app.get("/calculator", (req, res) =>
+  res.sendFile(__dirname + "/views/calculator.html"),
+);
+app.ws("/", (ws, req) => {
   ws.on("message", (json) => {
     let data = JSON.parse(json);
     switch (Eval(data.key)) {
@@ -53,8 +38,9 @@ wss.on("connection", (ws) => {
             break;
           case "get":
             ws.send(
-              Cache[Cache.indexOf(Cache.find((stream) => stream.key === key))]
-                .data,
+              Cache[
+                Cache.indexOf(Cache.find((stream) => stream.key === data.key))
+              ].data,
             );
             break;
         }
@@ -70,4 +56,7 @@ wss.on("connection", (ws) => {
         break;
     }
   });
+});
+app.listen(port, () => {
+  console.log(`Server is listening on ${port}`);
 });
